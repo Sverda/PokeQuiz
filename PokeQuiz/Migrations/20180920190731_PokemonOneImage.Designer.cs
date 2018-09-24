@@ -10,9 +10,10 @@ using System;
 namespace PokeQuiz.Migrations
 {
     [DbContext(typeof(PokeContext))]
-    partial class PokeContextModelSnapshot : ModelSnapshot
+    [Migration("20180920190731_PokemonOneImage")]
+    partial class PokemonOneImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

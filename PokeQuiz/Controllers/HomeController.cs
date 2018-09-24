@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokeQuiz.Models;
+using PokeQuiz.Services;
 
 namespace PokeQuiz.Controllers
 {
@@ -17,7 +18,9 @@ namespace PokeQuiz.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            var externalService = new ExternalPokemonService();
+
+            ViewData["Message"] = externalService.GetRandomPokemon();
 
             return View();
         }
