@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using PokeApi;
 using PokeQuiz.Models;
-using PokeQuiz.Services;
 
 namespace PokeQuiz.Controllers
 {
@@ -18,9 +14,9 @@ namespace PokeQuiz.Controllers
 
         public IActionResult About()
         {
-            var externalService = new ExternalPokemonService();
+            var externalService = new PokeApiService();
 
-            ViewData["Message"] = externalService.GetRandomPokemon();
+            ViewData["Message"] = externalService.GetRandomPokemon().Name;
 
             return View();
         }
