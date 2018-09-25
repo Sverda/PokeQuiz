@@ -13,6 +13,7 @@ namespace PokeQuiz.Services
         {
             modelBuilder.Entity<Pokemon>()
                 .HasKey(b => b.Name);
+
         }
 
         public DbSet<Pokemon> Pokemon { get; set; }

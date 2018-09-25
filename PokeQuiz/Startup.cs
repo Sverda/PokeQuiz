@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PokeApi;
 using PokeApi.Interfaces;
 using PokeQuiz.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PokeQuiz
 {
@@ -21,8 +23,9 @@ namespace PokeQuiz
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             services.AddDbContext<PokeContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("PokeQuizDatabase")));
 
@@ -35,14 +38,15 @@ namespace PokeQuiz
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
