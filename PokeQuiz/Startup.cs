@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PokeApi;
+using PokeApi.Interfaces;
 using PokeQuiz.Services;
 
 namespace PokeQuiz
@@ -23,6 +25,9 @@ namespace PokeQuiz
             
             services.AddDbContext<PokeContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("PokeQuizDatabase")));
+
+            services.AddSingleton<IPokeApiHandler, PokeApiHandler>();
+            services.AddSingleton<IPokeApiService, PokeApiService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

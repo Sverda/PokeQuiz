@@ -1,12 +1,20 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PokeApi;
+using PokeApi.Interfaces;
 using PokeQuiz.Models;
 
 namespace PokeQuiz.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IPokeApiService _pokeApiService;
+
+        public HomeController(IPokeApiService pokeApiService)
+        {
+            this._pokeApiService = pokeApiService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -14,9 +22,7 @@ namespace PokeQuiz.Controllers
 
         public IActionResult About()
         {
-            var externalService = new PokeApiService();
-
-            ViewData["Message"] = externalService.GetRandomPokemon().Name;
+            ViewData["Message"] = _pokeApiService.GetRandomPokemon().Name;
 
             return View();
         }

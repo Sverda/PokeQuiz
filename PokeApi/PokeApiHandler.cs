@@ -1,14 +1,15 @@
 ﻿using System.Net;
 using Newtonsoft.Json;
+using PokeApi.Interfaces;
 using PokeApi.Model;
 
 namespace PokeApi
 {
-    internal class PokeApiHandler
+    public class PokeApiHandler : IPokeApiHandler
     {
         private readonly WebClient _client;
         private static readonly string PokeApiHost = @"https://pokeapi.co/api/v2/";
-        private static readonly string PokemonSuffix = "pokemon/";
+        private static readonly string PokemonUrlSuffix = "pokemon/";
 
         public PokeApiHandler()
         {
@@ -34,7 +35,7 @@ namespace PokeApi
 
         private PokemonJson getPokemon(int index)
         {
-            var urlSuffix = PokemonSuffix + index + "/";
+            var urlSuffix = PokemonUrlSuffix + index + "/";
             var content = _client.DownloadString(urlSuffix);
             var parsedJson = JsonConvert.DeserializeObject<PokemonJson>(content);
             return parsedJson;
