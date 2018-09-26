@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using PokeApi;
+using PokeApi.Interfaces;
 using PokeQuiz.Models;
 
 namespace PokeQuiz.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IPokeApiService _pokeApiService;
+
+        public HomeController(IPokeApiService pokeApiService)
+        {
+            this._pokeApiService = pokeApiService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -17,7 +22,7 @@ namespace PokeQuiz.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = _pokeApiService.GetRandomPokemon().Name;
 
             return View();
         }
