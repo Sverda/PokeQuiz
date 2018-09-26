@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PokeApi.Interfaces;
 using PokeApi.Model;
@@ -21,22 +22,22 @@ namespace PokeApi
 
         public string GetPokemonName(int index)
         {
-            var pokemon = getPokemon(index);
+            var pokemon = getPokemonAsync(index).Result;
             return pokemon.name;
         }
 
         public byte[] GetPokemonSprite(int index)
         {
-            var pokemon = getPokemon(index);
+            var pokemon = getPokemonAsync(index).Result;
             var spriteUrl = pokemon.sprites["front_default"];
             var sprite = _client.DownloadData(spriteUrl);
             return sprite;
         }
 
-        private PokemonJson getPokemon(int index)
+        private async Task<PokemonJson> getPokemonAsync(int index)
         {
             var urlSuffix = PokemonUrlSuffix + index + "/";
-            var content = _client.DownloadString(urlSuffix);
+            var content = await _client.DownloadStringTaskAsync(urlSuffix);
             var parsedJson = JsonConvert.DeserializeObject<PokemonJson>(content);
             return parsedJson;
         }

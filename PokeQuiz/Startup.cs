@@ -26,11 +26,11 @@ namespace PokeQuiz
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<PokeContext>
-                (options => options.UseSqlServer(Configuration.GetConnectionString("PokeQuizDatabase")));
-
             services.AddSingleton<IPokeApiHandler, PokeApiHandler>();
             services.AddSingleton<IPokeApiService, PokeApiService>();
+
+            services.AddDbContext<PokeContext>
+                (options => options.UseSqlServer(Configuration.GetConnectionString("PokeQuizDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
