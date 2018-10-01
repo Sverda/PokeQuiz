@@ -22,19 +22,19 @@ namespace PokeApi
 
         public string GetPokemonName(int index)
         {
-            var pokemon = getPokemonAsync(index).Result;
+            var pokemon = getPokemonFromApi(index).Result;
             return pokemon.name;
         }
 
         public byte[] GetPokemonSprite(int index)
         {
-            var pokemon = getPokemonAsync(index).Result;
+            var pokemon = getPokemonFromApi(index).Result;
             var spriteUrl = pokemon.sprites["front_default"];
             var sprite = _client.DownloadData(spriteUrl);
             return sprite;
         }
 
-        private async Task<PokemonJson> getPokemonAsync(int index)
+        private async Task<PokemonJson> getPokemonFromApi(int index)
         {
             var urlSuffix = PokemonUrlSuffix + index + "/";
             var content = await _client.DownloadStringTaskAsync(urlSuffix);

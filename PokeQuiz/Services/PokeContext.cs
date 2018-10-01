@@ -20,9 +20,13 @@ namespace PokeQuiz.Services
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Pokemon>()
-                .HasKey(b => b.Name);
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
 
-            seedDatabase(modelBuilder);
+            modelBuilder.Entity<Pokemon>()
+                .HasKey(p => p.Name);
+
+            //seedDatabase(modelBuilder);
         }
 
         private void seedDatabase(ModelBuilder modelBuilder)

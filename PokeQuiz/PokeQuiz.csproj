@@ -21,8 +21,4 @@
     <ProjectReference Include="..\PokeApi\PokeApi.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Interfaces\" />
-  </ItemGroup>
-
 </Project>

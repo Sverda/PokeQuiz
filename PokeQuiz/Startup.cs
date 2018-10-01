@@ -8,6 +8,7 @@ using PokeApi.Interfaces;
 using PokeQuiz.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PokeQuiz.Services.Interfaces;
 
 namespace PokeQuiz
 {
@@ -26,11 +27,13 @@ namespace PokeQuiz
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSingleton<IPokeApiHandler, PokeApiHandler>();
-            services.AddSingleton<IPokeApiService, PokeApiService>();
+            services.AddTransient<IPokeApiHandler, PokeApiHandler>();
+            services.AddTransient<IPokeApiService, PokeApiService>();
 
             services.AddDbContext<PokeContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("PokeQuizDatabase")));
+
+            services.AddTransient<IPokemonService, PokemonService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
