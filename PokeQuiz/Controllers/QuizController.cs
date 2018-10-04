@@ -5,7 +5,8 @@ using PokeQuiz.Services.Interfaces;
 
 namespace PokeQuiz.Controllers
 {
-    public class QuizController : Controller
+    [Route("api/[controller]")]
+    public class QuizController : ControllerBase
     {
         private readonly IPokemonService _pokemonService;
 
@@ -14,15 +15,16 @@ namespace PokeQuiz.Controllers
             _pokemonService = pokemonService;
         }
 
-        public IActionResult Index()
+        public QuizViewModel Get()
         {
             var correctAnswer = _pokemonService.ChooseRandom();
-            var fakeAnswers = Enumerable.Range(1, 3).Select(_ => _pokemonService.ChooseRandom().Name);
-            return View(new QuizViewModel
+            var fakeAnswers = Enumerable.Range(1, 3).Select(_ => _pokemonService.ChooseRandom().Name).ToList();
+            fakeAnswers.Add(correctAnswer.Name);
+            return new QuizViewModel
             {
                 CorrectAnswer = correctAnswer,
                 FakeAnswers = fakeAnswers
-            });
+            };
         }
     }
 }
