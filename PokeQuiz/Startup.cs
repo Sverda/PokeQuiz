@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PokeApi;
 using PokeApi.Interfaces;
 using PokeQuiz.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PokeQuiz.Services.Interfaces;
 
@@ -25,16 +26,13 @@ namespace PokeQuiz
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(10));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddHttpContextAccessor();
 
             services.AddTransient<IPokeApiHandler, PokeApiHandler>();
             services.AddTransient<IPokeApiService, PokeApiService>();
-
-            services.AddDbContext<PokeContext>
-                (options => options.UseSqlServer(Configuration.GetConnectionString("PokeQuizDatabase")));
-
+            services.AddDbContext<PokeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PokeQuizDatabase")));
             services.AddTransient<IPokemonService, PokemonService>();
         }
 
@@ -52,9 +50,9 @@ namespace PokeQuiz
             }
 
             app.UseCors(builder => builder.AllowAnyOrigin());
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

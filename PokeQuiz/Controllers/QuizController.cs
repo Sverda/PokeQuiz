@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Model;
+using Model.Dto;
 using PokeQuiz.Services.Interfaces;
 
 namespace PokeQuiz.Controllers
@@ -9,31 +10,36 @@ namespace PokeQuiz.Controllers
     public class QuizController : ControllerBase
     {
         private readonly IPokemonService _pokemonService;
-        private QuizViewModel _questionData;
+        private readonly string _correctAnswerKey = "answer";
+        private ISession session;
 
-        public QuizController(IPokemonService pokemonService)
+        public QuizController(IPokemonService pokemonService, IHttpContextAccessor httpContextAccessor)
         {
             _pokemonService = pokemonService;
+            session = httpContextAccessor.HttpContext.Session;
         }
 
         [Route("question")]
-        public QuizViewModel GetQuestion()
+        public QuizDto GetQuestion()
         {
             var correctAnswer = _pokemonService.ChooseRandom();
             var fakeAnswers = Enumerable.Range(1, 3).Select(_ => _pokemonService.ChooseRandom().Name).ToList();
             fakeAnswers.Add(correctAnswer.Name);
-            _questionData = new QuizViewModel
+
+            session.SetString(_correctAnswerKey, correctAnswer.Name);
+
+            return new QuizDto
             {
                 CorrectAnswer = correctAnswer,
                 FakeAnswers = fakeAnswers
             };
-            return _questionData;
         }
 
         [Route("answer/{name}")]
         public bool GetAnswer(string name)
         {
-            return name == _questionData?.CorrectAnswer.Name;
+            var correctName = session.GetString(_correctAnswerKey);
+            return name == correctName;
         }
     }
 }

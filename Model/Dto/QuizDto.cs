@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Model
+namespace Model.Dto
 {
-    public class QuizViewModel
+    public class QuizDto
     {
         public Pokemon CorrectAnswer { get; set; }
         public IEnumerable<string> FakeAnswers { get; set; }
