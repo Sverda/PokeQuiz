@@ -49,7 +49,7 @@ namespace PokeQuiz
                 app.UseHsts();
             }
 
-            app.UseCors(builder => builder.AllowAnyOrigin());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowCredentials());
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
